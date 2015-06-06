@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>hello world</title>
+	<title>注册会员</title>
 </head>
 <body>
-	
+	<h1>会员注册</h1>
 </body>
 </html>
