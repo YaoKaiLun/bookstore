@@ -7,12 +7,13 @@
 </head>
 <body>
 	<h1>会员登录</h1>
-	<form action="">
-		<input type="text" name="membername" placeholder="邮箱号"><br>
-		<input type="password" name="password" placeholder="密码"><br>
-		<button>登录</button><br>
+	<?php echo validation_errors(); ?>
+    <?php echo form_open('acontroller/index') ?>
+		<input type="email" name="login_email" placeholder="邮箱号" value="<?php echo set_value('login_email');?>"><br>
+		<input type="password" name="login_pwd" placeholder="密码" value="<?php echo set_value('login_email');?>"><br>
+		<input type="submit" value="登录"><br>
 	</form>
-	<a href="aregist.php">注册</a>
+	<a href="acontroller/handle_reg">注册</a>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 </body>
