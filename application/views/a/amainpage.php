@@ -5,9 +5,25 @@
 	<title>图书展示</title>
 </head>
 <body>
-	<?php foreach ($books as $book_item): ?>
-    <?php echo $book_item['ISBN'] ?>
-    <?php echo $book_item['BOOK_NAME'] ?>
-<?php endforeach ?>
+   <h1>商品展示区</h1>
+    <table>
+    	<tr>
+    		<th>书名</th>
+    		<th>作者</th>
+    		<th>价格</th>
+    		<th>库存量</th>
+    	</tr>
+<?php 
+foreach ($books->result() as $book)
+{
+    $booknum = $book->BOOK_NUM;
+    if($book->BOOK_IF_DOWN==1) 
+        $booknum = "已下架";
+     echo '<tr><td>'.$book->BOOK_NAME.'</td><td>'.$book->BOOK_AUTHOR.'</td><td>'.
+           $book->BOOK_PRICE.'</td><td>'.$booknum.'</td><tr>';
+}
+?>
+    </table>
+       <?php echo $this->pagination->create_links(); ?>
 </body>
 </html>

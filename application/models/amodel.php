@@ -7,14 +7,6 @@ class Amodel extends CI_Model {
   }
   public function insert_member()
   {
-  	/*$mem_array = array('MEMBER_POST' => $this->input->post('reg_email'),
-	  	               'MEMBER_PWD' => $this->input->post('reg_pwd'), 
-	  		           'MEMBER_SEX' => $this->input->post('reg_sex'),
-	  	               'MEMBER_PHONE' => $this->input->post('reg_phone'), 
-	  		           'MEMBER_ADDR' => $this->input->post('reg_addr')
-  		              );
-    $this->db->set($mem_array);
-    $this->db->insert('MEMBER');*/
     $reg_email = $this->input->post('reg_email');
     $reg_pwd = $this->input->post('reg_pwd');
     $reg_sex = $this->input->post('reg_sex');
@@ -35,9 +27,9 @@ class Amodel extends CI_Model {
   	else if($encode_pwd!=$row->MEMBER_PWD) return 1 ;
   	else return 2;
   }
-    public function get_books()
+    public function get_books($num, $offset)
   {
-    $query = $this->db->query('select ISBN,book_name from book');
-    return $query->result_array();
+    $query = $this->db->get('BOOK', $num, $offset);   
+    return $query;
   }
 }

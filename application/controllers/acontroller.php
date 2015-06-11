@@ -7,12 +7,8 @@ class Acontroller extends CI_Controller {
       $this->load->model('amodel');
   	  $this->load->helper('form');
 	  $this->load->library('form_validation');
-
-    }
-    public function show_books()
-    {
- 	 	$data['books']=$this->amodel->get_books();
-	 	$this->load->view('a/amainpage.php',$data);
+      $this->load->database();
+      $this->load->helper('url');
     }
 	public function index()
 	{
@@ -57,5 +53,16 @@ class Acontroller extends CI_Controller {
 	  	  $this->amodel->insert_member();
 	      $this->load->view('a/alogin.php');
 	  }
-	 }		
+	 }
+    public function show_books()
+    {
+    	$this->load->library('pagination');
+    	$config['base_url'] = site_url('acontroller/show_books');
+	    $config['total_rows'] = $this->db->count_all('BOOK');
+	    $config['per_page'] = 4;
+	    $config['uri_segment'] = 3;
+	    $this->pagination->initialize($config);
+ 	 	$data['books']=$this->amodel->get_books($config['per_page'],$this->uri->segment(3));
+	 	$this->load->view('a/amainpage.php',$data);
+    }		
 }
