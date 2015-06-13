@@ -9,6 +9,7 @@ class Acontroller extends CI_Controller {
 	  $this->load->library('form_validation');
       $this->load->database();
       $this->load->helper('url');
+      $this->load->helper('cookie');
     }
 	public function index()
 	{
@@ -51,11 +52,13 @@ class Acontroller extends CI_Controller {
 	  else
 	  {
 	  	  $this->amodel->insert_member();
+	  	  echo "注册成功";
 	      $this->load->view('a/alogin.php');
 	  }
 	 }
     public function show_books()
     {
+       	$data['username']=get_cookie('username',true);
     	$this->load->library('pagination');
     	$config['base_url'] = site_url('acontroller/show_books');
 	    $config['total_rows'] = $this->db->count_all('BOOK');

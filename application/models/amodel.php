@@ -25,9 +25,22 @@ class Amodel extends CI_Model {
   	$num = $query->num_rows();
   	if($num == 0) return 0;
   	else if($encode_pwd!=$row->MEMBER_PWD) return 1 ;
-  	else return 2;
+  	else
+      {
+      $cookie = array(
+              'name'   => 'username',
+              'value'  => $login_email,
+              'expire' => time()+86500,
+              //chrome不能保存本地cookie，所以不要设置domain
+              //'domain' => '.localhost',
+              'path'   => '/',
+             );   
+      $this->input->set_cookie($cookie);
+      $_COOKIE['username'] = $login_email;
+      return 2;
+      } 
   }
-    public function get_books($num, $offset)
+      public function get_books($num, $offset)
   {
     $query = $this->db->get('BOOK', $num, $offset);   
     return $query;

@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
+<?php include '/application/views/template/header.php'?>
 	<title>库存管理</title>
 </head>
 <body>
@@ -37,6 +34,4 @@ foreach ($books->result() as $book)
        <?php echo $this->pagination->create_links(); ?>
        <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
        <?php echo "<script src=".base_url('lib/js/bjs.js')."></script>";?>
-       
-</body>
-</html>
+<?php include '/application/views/template/footer.php'?>

@@ -1,19 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>图书展示</title>
+<?php include '/application/views/template/header.php'?>
+  <title>图书展示</title>
 </head>
 <body>
-   <h1>商品展示区</h1>
-
-    <table>
-    	<tr>
-           <th>书名</th>
-           <th>作者</th>
-           <th>价格</th>
-           <th>库存量</th>
-    	</tr>
+    <div class="container">
+<?php 
+    if(get_cookie('username',true)) echo get_cookie('username',true);
+    else echo "请先登录！"
+?>
+      <h1>商品展示区</h1>
+      <table class="table">
+      	<tr>
+             <th>书名</th>
+             <th>作者</th>
+             <th>价格</th>
+             <th>库存量</th>
+      	</tr>
 <?php 
 foreach ($books->result() as $book)
 {
@@ -24,7 +25,7 @@ foreach ($books->result() as $book)
           $book->BOOK_PRICE.'</td><td>'.$booknum.'</td><tr>';
 }
 ?>
-    </table>
-       <?php echo $this->pagination->create_links(); ?>
-</body>
-</html>
+      </table>
+<?php echo $this->pagination->create_links(); ?>
+    </div>
+<?php include '/application/views/template/footer.php'?>
