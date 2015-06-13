@@ -49,12 +49,53 @@ class Bcontroller extends CI_Controller {
     public function show_store()
     {
     	$this->load->library('pagination');
-    	$config['base_url'] = site_url('acontroller/show_books');
+    	$config['base_url'] = site_url('bcontroller/show_store');
 	    $config['total_rows'] = $this->db->count_all('BOOK');
 	    $config['per_page'] = 4;
 	    $config['uri_segment'] = 3;
 	    $this->pagination->initialize($config);
- 	 	$data['books']=$this->amodel->deal_store($config['per_page'],$this->uri->segment(3));
-    	$this->load->view('b/storeadmin.php');
+ 	 	$data['books']=$this->bmodel->deal_store($config['per_page'],$this->uri->segment(3));
+    	$this->load->view('b/storeadmin.php',$data);
+    }
+    public function change_book()
+    {
+    	$change = $this->bmodel->change_book();
+    	echo $change;
+    }
+    public function delete_book()
+    {
+    	$delete = $this->bmodel->delete_book();
+    	echo $delete;
+    }
+    public function add_book_view()
+    {
+    	$this->load->view('b/addbook.php');
     }	
+    public function add_book()
+    {
+       $this->form_validation->set_rules('isbn', 'isbn', 'trim|required');
+	   $this->form_validation->set_rules('bookname', 'bookname', 'trim|required');
+	   $this->form_validation->set_rules('bookauthor', 'bookauthor', 'trim|required');
+	   $this->form_validation->set_rules('publishhouse', 'publishhouse', 'trim|required');
+	   $this->form_validation->set_rules('publishtime', 'publishtime', 'trim|required');
+	   $this->form_validation->set_rules('bookprice', 'bookprice', 'trim|required');
+	   $this->form_validation->set_rules('booknum', 'booknum', 'trim|required');
+	   $this->form_validation->set_rules('bookkey', 'bookkey', 'trim|required');
+	   $this->form_validation->set_rules('bookpage', 'bookpage', 'trim|required');
+	   $this->form_validation->set_rules('bookinfo', 'bookinfo', 'trim|required');
+	  if ($this->form_validation->run() == FALSE)
+      {
+	      $this->load->view('b/addbook.php');
+	  }
+	  else
+	  {
+	  	  $flag = $this->bmodel->add_book();
+	  	  if($flag)
+	  	  {
+	  	  	echo "添加成功";
+	  	  	$this->load->view('b/addbook.php');
+	  	  }
+	  	  else echo "添加失败";
+      }
+    }
 }
