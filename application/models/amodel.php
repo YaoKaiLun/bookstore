@@ -40,9 +40,14 @@ class Amodel extends CI_Model {
       return 2;
       } 
   }
-      public function get_books($num, $offset)
+  public function get_books($num, $offset)
   {
     $query = $this->db->get('BOOK', $num, $offset);   
     return $query;
+  }
+  public function book_detail($book_isbn)
+  {
+    $query = $this->db->query("select * from book where isbn = '{$book_isbn}'");
+    return $query->row();
   }
 }

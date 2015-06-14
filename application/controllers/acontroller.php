@@ -10,6 +10,7 @@ class Acontroller extends CI_Controller {
       $this->load->database();
       $this->load->helper('url');
       $this->load->helper('cookie');
+      $this->load->library('cart');
     }
 	public function index()
 	{
@@ -38,7 +39,7 @@ class Acontroller extends CI_Controller {
 	  }
 	}
 	public function handle_reg()
-	{
+	{ 
 	  $this->form_validation->set_rules('reg_email', 'reg_email', 'trim|required|valid_email');
 	  $this->form_validation->set_rules('reg_pwd', 'reg_pwd', 'trim|required|matches[conf_pwd]|md5');
 	  $this->form_validation->set_rules('conf_pwd', 'conf_pwd', 'trim|required');
@@ -58,7 +59,7 @@ class Acontroller extends CI_Controller {
 	 }
     public function show_books()
     {
-       	$data['username']=get_cookie('username',true);
+        $data['username']=get_cookie('username',true);
     	$this->load->library('pagination');
     	$config['base_url'] = site_url('acontroller/show_books');
 	    $config['total_rows'] = $this->db->count_all('BOOK');
@@ -67,5 +68,51 @@ class Acontroller extends CI_Controller {
 	    $this->pagination->initialize($config);
  	 	$data['books']=$this->amodel->get_books($config['per_page'],$this->uri->segment(3));
 	 	$this->load->view('a/amainpage.php',$data);
-    }		
+    }
+    public function book_detail($book_isbn)
+    {
+	    $data['username']=get_cookie('username',true);
+	    $data['detail']=$this->amodel->book_detail($book_isbn);
+	    $this->load->view('a/bookdetail.php',$data);
+    }
+    public function add_cart()
+    {
+		$this->form_validation->set_rules('cart_isbn', 'cart_isbn', 'trim|required');
+		if ($this->form_validation->run() == FALSE)
+        {
+	       $this->load->view('a/mainpage.php');
+	    }
+	    else
+	    {
+	  	   $data = array(
+               'id'   => $this->input->post('cart_isbn'),
+               'qty'  => $this->input->post('cart_num'),
+               'price'=> $this->input->post('cart_price'),
+               'name' => $this->input->post('cart_name')
+            );
+           $this->cart->insert($data);
+	  	   /*$cart = $this->cart->contents();
+	  	   echo "<pre>";
+	  	   print_r($cart);*/
+	  	   echo "添加成功";
+	    } 
+    }
+    public function show_cart()
+    {
+        $this->load->view('a/cartview.php');
+    }
+    public function delete_cart()
+    {
+    	$data = array(
+               'rowid'   => $this->input->post('cart_rowid'),
+               'qty'  => 0,
+            );	
+    	$this->cart->update($data);
+    	$this->show_cart();
+    }
+    public function delete_cookie()
+    {
+    	delete_cookie('username');
+    	$this->load->view('a/alogin.php');
+    }
 }

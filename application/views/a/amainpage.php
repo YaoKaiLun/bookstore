@@ -3,10 +3,7 @@
 </head>
 <body>
     <div class="container">
-<?php 
-    if(get_cookie('username',true)) echo get_cookie('username',true);
-    else echo "请先登录！"
-?>
+<?php include '/application/views/template/navigation.php'?>
       <h1>商品展示区</h1>
       <table class="table">
       	<tr>
@@ -21,8 +18,8 @@ foreach ($books->result() as $book)
     $booknum = $book->BOOK_NUM;
     if($book->BOOK_IF_DOWN==1) 
         $booknum = "已下架";
-    echo '<tr><td>'.$book->BOOK_NAME.'</td><td>'.$book->BOOK_AUTHOR.'</td><td>'.
-          $book->BOOK_PRICE.'</td><td>'.$booknum.'</td><tr>';
+    echo "<tr><td><a href=".site_url('acontroller/book_detail')."/".$book->ISBN.">".$book->BOOK_NAME."</a></td><td>".
+          $book->BOOK_AUTHOR."</td><td>".$book->BOOK_PRICE."</td><td>".$booknum."</td><tr>";
 }
 ?>
       </table>
