@@ -28,6 +28,13 @@
 	                <input type="password" id="conf_pwd" name="conf_pwd" placeholder="确认密码" 
 	                    value="<?php echo set_value('conf_pwd');?>">
 	            </div>
+	        </div>
+	        <div class="control-group">
+	            <label class="control-label" for="reg_name">姓名</label>
+	            <div class="controls">
+	                <input type="tel" id="reg_name" name="reg_name" placeholder="姓名" 
+		                value="<?php echo set_value('reg_name');?>">
+	            </div>
 	        </div> 
 	        <div class="control-group"> 
 	            <div class="controls">
@@ -65,3 +72,5 @@
 	form.className="form-horizontal";  
 </script>
 <?php include '/application/views/template/footer.php'?>
+</body>
+</html>

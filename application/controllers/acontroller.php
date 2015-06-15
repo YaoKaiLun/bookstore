@@ -43,6 +43,7 @@ class Acontroller extends CI_Controller {
 	  $this->form_validation->set_rules('reg_email', 'reg_email', 'trim|required|valid_email');
 	  $this->form_validation->set_rules('reg_pwd', 'reg_pwd', 'trim|required|matches[conf_pwd]|md5');
 	  $this->form_validation->set_rules('conf_pwd', 'conf_pwd', 'trim|required');
+	  $this->form_validation->set_rules('reg_name', 'reg_name', 'required');
 	  $this->form_validation->set_rules('reg_sex', 'reg_sex', 'required');
 	  $this->form_validation->set_rules('reg_phone', 'reg_phone', 'trim|required');
 	  $this->form_validation->set_rules('reg_addr', 'reg_addr', 'trim|required');
@@ -95,11 +96,23 @@ class Acontroller extends CI_Controller {
 	  	   echo "<pre>";
 	  	   print_r($cart);*/
 	  	   echo "添加成功";
-	    } 
+	  	   $this->show_cart();
+        }
     }
     public function show_cart()
     {
-        $this->load->view('a/cartview.php');
+    	$username = "";
+    	$data['person_name'] = "";
+    	$data['person_addr'] = "";
+        $data['person_phone'] = "";
+    	if(get_cookie('username',true))
+    	{
+             $row = $this->amodel->person_info(get_cookie('username',true));
+             $data['person_name'] = $row->MEMBER_NAME;
+             $data['person_addr'] = $row->MEMBER_ADDR;
+             $data['person_phone'] = $row->MEMBER_PHONE;
+    	}
+        $this->load->view('a/cartview.php',$data);
     }
     public function delete_cart()
     {
@@ -114,5 +127,23 @@ class Acontroller extends CI_Controller {
     {
     	delete_cookie('username');
     	$this->load->view('a/alogin.php');
+    }
+    public function create_order()
+    {
+    	$this->form_validation->set_rules('menber_post','member_post','trim|required');
+    	$this->form_validation->set_rules('get_name', 'get_name', 'trim|required');
+	    $this->form_validation->set_rules('get_addr', 'get_name', 'trim|required');
+	    $this->form_validation->set_rules('get_phone', 'get_phone', 'trim|required');
+	    $flag = $this->amodel->create_order();
+	    if($flag ==1 ) 
+	    {
+            echo "订单生成成功";
+	        $this->show_cart();
+	    }
+	    else
+	    { 
+	    	echo "订单生成失败";
+	        $this->show_cart();
+	    }
     }
 }

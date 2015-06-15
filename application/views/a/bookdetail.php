@@ -10,8 +10,10 @@
 	      <p>定价 ￥<?php echo $detail->BOOK_PRICE?></p>
 <?php
 $booknum = $detail->BOOK_NUM;
-if($detail->BOOK_IF_DOWN==1) 
-$booknum = "已下架";
+$down = $detail->BOOK_IF_DOWN;
+if($booknum!=0 && $down==1)  $booknum = "已下架";
+if($booknum==0 || $down==1)  $addcart="disabled";
+else $addcart = "";
 ?>
           <p>库存量 <?php echo $booknum?></p>
 	      <form class='form-inline' accept-charset='utf-8' method='post' action=
@@ -19,8 +21,8 @@ $booknum = "已下架";
 			      <input type='hidden' name='cart_isbn' value=<?php echo $detail->ISBN ?> >
 			      <input type='hidden' name='cart_name' value=<?php echo $detail->BOOK_NAME ?> >
 			      <input type='hidden' name='cart_price' value=<?php echo $detail->BOOK_PRICE ?> >
-            <input type='number' name='cart_num' class='input-small' min='1' max='1000' step='1'>
-            <input type='submit' value='加入购物车'>
+            <input type='number' id='cartNum' name='cart_num' class='input-small' min='1' max='1000' step='1'>
+            <input type='submit' id='addCart' value='加入购物车' <?php echo $addcart?> >
          </form>
       </div>
       <div class="accordion">
@@ -47,3 +49,17 @@ $booknum = "已下架";
           </div>
       </div>
 <?php include '/application/views/template/footer.php'?>
+<script>
+$(function(){
+    $("#addCart").click(function(){
+        if($("#cartNum").val()==="")
+        {
+            alert("数量不能为0");
+            event.preventDefault();
+            return false;
+        } 
+    });
+});
+</script>
+</body>
+</html>

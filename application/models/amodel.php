@@ -9,11 +9,12 @@ class Amodel extends CI_Model {
   {
     $reg_email = $this->input->post('reg_email');
     $reg_pwd = $this->input->post('reg_pwd');
+    $reg_name = $this->input->post('reg_name');
     $reg_sex = $this->input->post('reg_sex');
     $reg_phone = $this->input->post('reg_phone');
     $reg_addr = $this->input->post('reg_addr');
-    $this->db->query("insert into member(member_post,member_pwd,member_sex,member_phone,member_addr) 
-    	values('{$reg_email}','{$reg_pwd}','{$reg_sex}','{$reg_phone}','{$reg_addr}')");
+    $this->db->query("insert into member(member_post,member_pwd,member_name,member_sex,member_phone,member_addr) 
+    	values('{$reg_email}','{$reg_pwd}','{$reg_name}','{$reg_sex}','{$reg_phone}','{$reg_addr}')");
   }
   public function check_login()
   {
@@ -49,5 +50,43 @@ class Amodel extends CI_Model {
   {
     $query = $this->db->query("select * from book where isbn = '{$book_isbn}'");
     return $query->row();
+  }
+  public function person_info($username)
+  {
+    $query = $this->db->query("select member_name,member_addr,member_phone from member where member_post='{$username}'");
+    return $query->row(0);
+  }
+  public function create_order()
+  {
+    $member_post = $this->input->post('member_post');
+    $items = json_decode(base64_decode($this->input->post('items'),true));
+    $total_num = intval($this->input->post('total_num'));
+    $total_price = number_format($this->input->post('total_price'),2,'.','');
+    $get_name = $this->input->post('get_name');
+    $get_addr = $this->input->post('get_addr');
+    $get_phone = $this->input->post('get_phone');
+    //开启事务
+    $this->db->trans_start();
+    //添加订单
+    $query1 = $this->db->query("insert into book_order(order_num,order_price,order_name,order_addr,order_phone)
+      values('{$total_num}','{$total_price}','{$get_name}','{$get_addr}','{$get_phone}')");
+    //获取订单号
+    $query2 = $this->db->query("select order_id from book_order");
+    $row = $query2->row(0);
+    foreach ($items as $item) 
+    {   
+        $query3 = $this->db->query("select book_num,book_if_down from book where isbn='{$item->id}'");
+        $row2 = $query3->row(0);
+        if($row2->BOOK_NUM!=0&&$row2->BOOK_IF_DOWN!=1)
+        {
+           $this->db->query("update book set book_num = book_num-1 where isbn='{$item->id}'");
+           $this->db->query("update book set book_buy_num = book_buy_num + 1 where isbn='{$item->id}'");
+           $this->db->query("insert into order_item(isbn,order_item_num,order_item_price,book_name,member_post,order_id) 
+              values('{$item->id}','{$item->qty}','{$item->subtotal}','{$item->name}','{$member_post}','{$row->ORDER_ID}')");
+        }
+    }
+    $this->db->trans_complete();
+    if ($this->db->trans_status() === FALSE)  return 0;
+    else return 1;
   }
 }

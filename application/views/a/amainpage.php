@@ -26,3 +26,5 @@ foreach ($books->result() as $book)
 <?php echo $this->pagination->create_links(); ?>
     </div>
 <?php include '/application/views/template/footer.php'?>
+</body>
+</html>
