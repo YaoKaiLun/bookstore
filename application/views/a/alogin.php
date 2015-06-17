@@ -28,7 +28,6 @@
 		        </div>
 		    </div>       
 	    </form>
-	    
 	</div>
 <?php include '/application/views/template/footer.php'?>
 </body>

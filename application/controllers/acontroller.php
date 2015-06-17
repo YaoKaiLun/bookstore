@@ -146,4 +146,23 @@ class Acontroller extends CI_Controller {
 	        $this->show_cart();
 	    }
     }
+    public function show_my_order()
+    {
+    	$data['order'] = $this->amodel->show_my_order();
+    	$this->load->view('a/myorder.php',$data);
+    }
+    public function get_order()
+    {
+       $data = $this->amodel->get_order();
+       echo $data;
+    }
+    public function show_detail_order()
+    {
+        $result = $this->amodel->show_detail_order();
+        if($result){   // we got a result, output json
+            echo json_encode($result);
+        } else {
+            echo json_encode($result);
+        }
+    } 
 }

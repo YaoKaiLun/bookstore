@@ -68,11 +68,8 @@ class Amodel extends CI_Model {
     //开启事务
     $this->db->trans_start();
     //添加订单
-    $query1 = $this->db->query("insert into book_order(order_num,order_price,order_name,order_addr,order_phone)
-      values('{$total_num}','{$total_price}','{$get_name}','{$get_addr}','{$get_phone}')");
-    //获取订单号
-    $query2 = $this->db->query("select order_id from book_order");
-    $row = $query2->row(0);
+    $query1 = $this->db->query("insert into book_order(order_num,order_price,order_name,order_addr,order_phone,member_post)
+      values('{$total_num}','{$total_price}','{$get_name}','{$get_addr}','{$get_phone}','{$member_post}')");
     foreach ($items as $item) 
     {   
         $query3 = $this->db->query("select book_num,book_if_down from book where isbn='{$item->id}'");
@@ -82,11 +79,32 @@ class Amodel extends CI_Model {
            $this->db->query("update book set book_num = book_num-1 where isbn='{$item->id}'");
            $this->db->query("update book set book_buy_num = book_buy_num + 1 where isbn='{$item->id}'");
            $this->db->query("insert into order_item(isbn,order_item_num,order_item_price,book_name,member_post,order_id) 
-              values('{$item->id}','{$item->qty}','{$item->subtotal}','{$item->name}','{$member_post}','{$row->ORDER_ID}')");
+              values('{$item->id}','{$item->qty}','{$item->subtotal}','{$item->name}','{$member_post}',
+                seq_order_id.currval)");
         }
     }
     $this->db->trans_complete();
     if ($this->db->trans_status() === FALSE)  return 0;
     else return 1;
+  }
+  public function show_my_order()
+  {
+      $member_post = get_cookie('username',true);
+      $query = $this->db->query("select order_id,order_num,order_price,to_char(order_time,'yyyy-mm-dd hh24:mi') as
+               ordertime,order_if_get from book_order where member_post ='{$member_post}' order by ordertime desc");
+      return $query->result();
+  }
+  public function get_order()
+  {
+      $order_id = $this->input->post('order_id');
+      $flag = $this->db->query("update book_order set order_if_get=1 where order_id='{$order_id}'");
+      if($flag) return 1;
+      else return 0;
+  }
+  public function show_detail_order()
+  {
+      $order_id = $this->input->post('order_id');
+      $query = $this->db->query("select isbn,book_name,order_item_num from order_item where order_id='{$order_id}'");
+      return $query->result();
   }
 }

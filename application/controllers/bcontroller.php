@@ -35,6 +35,9 @@ class Bcontroller extends CI_Controller {
   		    case 3:
   		         $this->load->view('b/custservice.php');
   		         break;
+	        case 4:
+	             $this->load->view('b/sending_order.php');
+	             break;
 	  		default:
 	  		     echo "不存在的管理员类型";
 	  			break;
@@ -97,5 +100,24 @@ class Bcontroller extends CI_Controller {
 	  	  }
 	  	  else echo "添加失败";
       }
+    }
+    public function show_sending_order()
+    {
+    	$data['query'] = $this->bmodel->show_sending_order();
+    	$this->load->view('b/sending_order.php',$data); 
+    }
+    public function send_order()
+    {
+       $data = $this->bmodel->send_order();
+       echo $data;
+    }
+    public function show_detail_order()
+    {
+        $result = $this->bmodel->show_detail_order();
+        if($result){   // we got a result, output json
+            echo json_encode($result);
+        } else {
+            echo json_encode($result);
+        }
     }
 }

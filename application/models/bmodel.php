@@ -60,4 +60,25 @@ class Bmodel extends CI_Model {
     ");
     return $flag;
   }
+  public function show_sending_order()
+  {
+    $query = $this->db->query("select order_id,order_num,order_price,order_name,order_addr,order_phone,
+             to_char(order_time,'yyyy-mm-dd hh24:mi') as ordertime
+             from book_order where order_if_send=0");
+    return $query->result();
+  }
+  public function send_order()
+  {
+      $order_id = $this->input->post('order_id');
+      $flag = $this->db->query("update book_order set order_if_send=1");
+      if($flag) return 1;
+      else return 0;
+  }
+  public function show_detail_order()
+  {
+      //$order_id = $this->input->get('order_id');
+      $order_id = $this->input->post('order_id');
+      $query = $this->db->query("select isbn,book_name,order_item_num from order_item where order_id='{$order_id}'");
+      return $query->result();
+  }
 }

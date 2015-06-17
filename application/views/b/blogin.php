@@ -1,19 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
+<?php include '/application/views/template/header.php'?>
 	<title>管理员登录</title>
-	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 <body>
-	<h1>管理员登录</h1>
-	<?php echo validation_errors(); ?>
-    <?php echo form_open('bcontroller/index') ?>
-		<input type="text" name="admin_name" placeholder="账号" value="<?php echo set_value('admin_name');?>"><br>
-		<input type="password" name="admin_pwd" placeholder="密码" value="<?php echo set_value('admin_pwd');?>"><br>
-		<input type="submit" value="登录"><br>
-	</form>
-    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <div class="container">
+		<h1>管理员登录</h1>
+<?php echo validation_errors(); ?>
+        <form accept-charset="utf-8" method="post" action=
+           <?php echo site_url('bcontroller/index')?> class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="admin_name">账号</label>
+	            <div class="controls">
+	                <input type="text"  id="admin_name" name="admin_name" placeholder="账号" 
+	                    value="<?php echo set_value('admin_name');?>">
+	            </div>
+	        </div>
+	        <div class="control-group">
+                <label class="control-label" for="admin_pwd">密码</label>
+	            <div class="controls">
+	                <input type="password"  id="admin_pwd" name="admin_pwd" placeholder="密码" 
+	                    value="<?php echo set_value('admin_pwd');?>">
+	            </div>
+	        </div>
+	        <div class="control-group">
+		        <div class="controls">
+			        <input type="submit" value="登录" class="btn">
+		        </div>
+		    </div>
+		</form>
+	</div>
+<?php include '/application/views/template/footer.php'?>
 </body>
 </html>
