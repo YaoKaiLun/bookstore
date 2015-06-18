@@ -8,16 +8,16 @@
         <form accept-charset="utf-8" method="post" action=
            <?php echo site_url('bcontroller/index')?> class="form-horizontal">
             <div class="control-group">
-                <label class="control-label" for="admin_name">账号</label>
+                <label class="control-label" for="admin_id">账号</label>
 	            <div class="controls">
-	                <input type="text"  id="admin_name" name="admin_name" placeholder="账号" 
-	                    value="<?php echo set_value('admin_name');?>">
+	                <input type="text"  id="admin_id" name="admin_id" placeholder="账号" 
+	                    value="<?php echo set_value('admin_id');?>">
 	            </div>
 	        </div>
 	        <div class="control-group">
                 <label class="control-label" for="admin_pwd">密码</label>
 	            <div class="controls">
-	                <input type="password"  id="admin_pwd" name="admin_pwd" placeholder="密码" 
+	                <input type="text"  id="admin_pwd" name="admin_pwd" placeholder="密码" 
 	                    value="<?php echo set_value('admin_pwd');?>">
 	            </div>
 	        </div>

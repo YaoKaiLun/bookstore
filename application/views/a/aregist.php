@@ -37,12 +37,9 @@
 	            </div>
 	        </div> 
 	        <div class="control-group"> 
+	            <label class="control-label" for="reg_name">性别</label>
 	            <div class="controls">
 		            <label class="radio"><input type="radio" name="reg_sex" value="男" />男</label>
-		        </div>
-	        </div>
-	        <div class="control-group"> 
-	            <div class="controls">
 		            <label class="radio"><input type="radio" name="reg_sex" value="女" />女</label>
 		        </div>
 	        </div>
@@ -67,10 +64,10 @@
 		    </div>
 		</form>
 	</div>	
-<script>
+<!-- <script>
 	var form=document.getElementsByTagName("form");
 	form.className="form-horizontal";  
-</script>
+</script> -->
 <?php include '/application/views/template/footer.php'?>
 </body>
 </html>

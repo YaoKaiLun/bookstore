@@ -3,5 +3,5 @@
   <li><a href="#">已处理订单</a></li>
   <li><a href="#">带处理退货单</a></li>
   <li><a href="#">已处理退货单</a></li>
-  <li><a href="#">注销</a></li>
+  <li><a href=<?php echo site_url('bcontroller/index'); ?>>退出</a></li>
 </ul>

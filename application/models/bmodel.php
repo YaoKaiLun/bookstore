@@ -7,15 +7,19 @@ class Bmodel extends CI_Model {
   }
   public function check_login()
   {
-  	$admin_name = $this->input->post('admin_name');
-  	$admin_pwd = $this->input->post('admin_pwd');
-  	$query = $this->db->query("select admin_pwd,admin_type_id from admin where admin_name='{$admin_name}'");
-  	$row = $query->row();
-    $real_pwd = strtolower($row->ADMIN_PWD);
-  	$num = $query->num_rows();
-  	if($num == 0) return 0;
-  	else if($admin_pwd!= $real_pwd) return 404 ;
-  	else return $row->ADMIN_TYPE_ID;
+  	$admin_id = $this->input->post('admin_id');
+  	$admin_pwd = (int)$this->input->post('admin_pwd');
+  	$query = $this->db->query("select admin_pwd,admin_type_id,admin_mark from admin where admin_id='{$admin_id}'");
+    if(!empty($query))
+    {
+    $row = $query->row(0);
+    $num = $query->num_rows();
+    $real_pwd = $row->ADMIN_PWD;
+    if($num == 0) return 0;
+    else if($real_pwd!=$admin_pwd) return 404 ;
+    else if($row->ADMIN_MARK==1) return 403;
+    else return $row->ADMIN_TYPE_ID;
+    }
   }
   public function deal_store($num, $offset)
   {
@@ -81,4 +85,46 @@ class Bmodel extends CI_Model {
       $query = $this->db->query("select isbn,book_name,order_item_num from order_item where order_id='{$order_id}'");
       return $query->result();
   }
+  public function show_member($num, $offset)
+  {
+     $query = $this->db->get('MEMBER', $num, $offset);   
+     return $query->result();
+  }
+  public function show_admin($num, $offset)
+  {
+     $this->db->order_by('ADMIN_REG_TIME','DESC');
+     $query = $this->db->get_where('ADMIN',array('ADMIN_TYPE_ID !=' => 1), $num, $offset); 
+     return $query->result();
+  }
+  public function ban_admin()
+  {
+     $admin_id = $this->input->post('admin_id');
+     $flag = $this->db->query("update admin set admin_mark=1 where admin_id='{$admin_id}'");
+     if($flag) return 1;
+     else return 0;
+  }
+  public function ok_admin()
+  {
+     $admin_id = $this->input->post('admin_id');
+     $flag = $this->db->query("update admin set admin_mark=0 where admin_id='{$admin_id}'");
+     if($flag) return 1;
+     else return 0;
+  }
+  public function del_admin()
+  {
+     $admin_id = $this->input->post('admin_id');
+     $flag = $this->db->query("delete from admin where admin_id='{$admin_id}'");
+     if($flag) return 1;
+     else return 0;
+  }
+  public function add_admin()
+  {
+      $reg_name = $this->input->post('reg_name');
+      $reg_pwd = $this->input->post('reg_pwd');
+      $type_id = intval($this->input->post('admin_type_id'));
+      $query = $this->db->query("insert into admin(admin_name,admin_pwd,admin_type_id)
+       values('{$reg_name}','{$reg_pwd}','{$type_id}')");
+      if($query) return 1;
+      else return 0;
+  }  
 }

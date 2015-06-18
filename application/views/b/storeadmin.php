@@ -3,7 +3,7 @@
 </head>
 <body>
     <div class="container">
-	<h1>删除和修改商品(<a href='/bookstore/index.php/bcontroller/add_book_view'>添加</a>)</h1>
+ <?php include '/application/views/template/store_nav.php'?>   
 	  <table class="table">
     	<tr>
     	 <th>ISBN</th>
@@ -31,8 +31,9 @@ foreach ($books->result() as $book)
          "<input type='button' value='提交' class='changeBook'>"."</td></tr>";
 }
 ?>
-    </table>
-       <?php echo $this->pagination->create_links(); ?>
+       </table>
+<?php echo $this->pagination->create_links(); ?>
+    </div>
        <?php echo "<script src=".base_url('lib/js/bjs.js')."></script>";?>
 <?php include '/application/views/template/footer.php'?>
 </body>

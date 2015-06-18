@@ -5,7 +5,7 @@
 	<title>客服人员管理</title>
 </head>
 <body>
-	<h1>客服人员管路</h1>
+	<h1>客服人员管理</h1>
 	<input type="button" value="管理书评">
 	<input type="button" value="管理退货单">
 </body>

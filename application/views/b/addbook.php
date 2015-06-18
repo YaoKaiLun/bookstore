@@ -3,7 +3,7 @@
 </head>
 <body>
 <div class="container">
-    <h3>添加图书</h3>
+<?php include '/application/views/template/store_nav.php'?>   
 <?php echo validation_errors(); ?>
 	<form accept-charset="utf-8" method="post" action=
            <?php echo site_url('bcontroller/add_book')?> class="form-horizontal">

@@ -41,12 +41,12 @@ class Acontroller extends CI_Controller {
 	public function handle_reg()
 	{ 
 	  $this->form_validation->set_rules('reg_email', 'reg_email', 'trim|required|valid_email');
-	  $this->form_validation->set_rules('reg_pwd', 'reg_pwd', 'trim|required|matches[conf_pwd]|md5');
+	  $this->form_validation->set_rules('reg_pwd', 'reg_pwd', 'trim|required|min_length[6]|max_length[30]|matches[conf_pwd]|md5');
 	  $this->form_validation->set_rules('conf_pwd', 'conf_pwd', 'trim|required');
-	  $this->form_validation->set_rules('reg_name', 'reg_name', 'required');
+	  $this->form_validation->set_rules('reg_name', 'reg_name', 'required|max_length[20]');
 	  $this->form_validation->set_rules('reg_sex', 'reg_sex', 'required');
-	  $this->form_validation->set_rules('reg_phone', 'reg_phone', 'trim|required');
-	  $this->form_validation->set_rules('reg_addr', 'reg_addr', 'trim|required');
+	  $this->form_validation->set_rules('reg_phone', 'reg_phone', 'trim|required|is_natural|max_length[20]');
+	  $this->form_validation->set_rules('reg_addr', 'reg_addr', 'trim|required|max_length[50]');
       if ($this->form_validation->run() == FALSE)
       {
 	      $this->load->view('a/aregist.php');
@@ -60,15 +60,15 @@ class Acontroller extends CI_Controller {
 	 }
     public function show_books()
     {
-        $data['username']=get_cookie('username',true);
+      $data['username']=get_cookie('username',true);
     	$this->load->library('pagination');
     	$config['base_url'] = site_url('acontroller/show_books');
 	    $config['total_rows'] = $this->db->count_all('BOOK');
 	    $config['per_page'] = 4;
 	    $config['uri_segment'] = 3;
 	    $this->pagination->initialize($config);
- 	 	$data['books']=$this->amodel->get_books($config['per_page'],$this->uri->segment(3));
-	 	$this->load->view('a/amainpage.php',$data);
+ 	 	  $data['books']=$this->amodel->get_books($config['per_page'],$this->uri->segment(3));
+	 	  $this->load->view('a/amainpage.php',$data);
     }
     public function book_detail($book_isbn)
     {
