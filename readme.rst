@@ -1,69 +1,75 @@
-###################
-What is CodeIgniter
-###################
+一、实验目的
+    设计、实现与下面给定问题背景的相关的功能，涵盖尽量多的数据库系统提供的功能（比如用关键码、约束、触发器等保证数据的一致性，用过程或函数简化输入/查询功能，用视图做数据表的连接/分类统计等）
+二、使用设备和技术
+微机一台
+操作系统：Win8.1
+编程软件：sublime text3、sql developer、powerdesigner
+编程语言：php 、oracle、codeigniter框架、 bootstrap框架
+三、实验内容及原理
+该项目范围是开发一个电子书店网站以及后台管理系统。实现的基本功能主要有：
+1. 图书选购（可按分类方式查找图书，或者通过关键字进行查询）
+2. 购物车功能
+3. 查看图书详细情况
+4. 用户注册
+5. 用户登陆
+6. 查看用户的订单信息
+7. 修改用户个人信息
+8. 图书库存管理：添加、修改、删除、查看。
+9. 用户信息管理：查看、修改、删除。
+10. 图书配送(含配送单的产生、配送单状态维护)
+四、实验过程原始数据记录
+1.粗略设计数据库：
+系统共有十个实体：会员、管理员、管理员类别、图书类型、图书、订单项、订单、退单项、退货单、图书评价
+（1）会员的属性：会员号、邮箱、会员密码、性别、会员电话、地址、注册时间、拉黑标志
+（2）管理员类别的属性：管理员类别编号。管理员类别
+（3）管理员的属性：管理员编号、管理员名称、管理员类别编号、密码
+（4）图书类型的属性：图书类别编号、图书类别名称
+（5）图书的属性：ISBN、图书名称、图书类型编号、出版社、出版日期、图书作者、关键字、
+     价格、图书页码、图书简介、成交量、图书库存量、下架
+（6）订单项属性：订单项编号、ISBN、图书名称、邮箱、订单号、订购数量、总价格
+（7）订单的属性：订单号、总数量、总价格、收货人姓名、收货地址、收货人电话、下单时间、发货状态、收货状态、邮箱
+（8）退单项属性：退单项编号、ISBN、图书名称、邮箱、退货单号、退货数量、总价格
+（9）退货单的属性：退货单号、总数量、总价格、退货人姓名、退货地址、退货人电话、退单时间、退货状态、收货状态、邮箱
+（10）图书评价的属性：图书评价编号、ISBN、图书名称、会员号、评论时间、评论内容
+报表
+2.使用powerdesigner设计数据库
+3.将概念模型转换为相应的sql语句，生成数据库
+4.编程实现
+五、实验结果及总结
+前台购物系统：
+1.登录模块
+2.注册模块
+3.商品展示模块
+4.商品详情模块
+5.购物车模块
+6.订单模块
+7.退货模块
+后台管理系统：
+1.管理员登录模块
+2.系统管理员查看会员信息模块
+3.系统管理员管理所有管理员模块
+4.仓库管理员管理库存模块
+5.配送人员管理订单模块
+实验总结：
+1.遇到的问题：
+a.订单：在整个数据库设计中，最令我费神的是订单的处理，一开始只打算用一个订单表来存放订单，但考虑到一个订单可能包含多本书，所以增加了订单项表，为了使订单项和订单联系起来，我使用了订单号作为外键，这样，在订单项表里，就可以拥有对个订单号相同的记录。
+b.数据类型的选择和大小：虽说数据库修改类型和大小并不难，但却是件麻烦的事，所以，一开始应该规定好所有数据的类型和大小，例如密码加密后为多少位，邮箱的最大长度为多少等等，处理好这个问题，后面才可以省心。
+c.在powerdesigner中转换为sql语句：转为sql语句后，出现了大量的问题，例如出现乱码，命名错误，大小写不一致等等，所以给我的经验教训是，如果设计的数据库不大，最好是自己写sql语句，减小出错的概率。
+d.是否要使用触发器，下面是我在知乎上找到的解决方法：
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+考虑到购物网站的访问量并不是很大的问题，所以我使用了一个触发器，即当商品的库存量为0时，自动下架。而其他的如购买商品，库存量减1之类的写在代码逻辑里。
+e.购物车的实现：由于产品要求退出后自动清除购物车，所以我把购物车的数据存储在session中，而非数据库中，从而减少了数据库的压力。
 
-*******************
-Release Information
-*******************
+2实验的不足处：
+a.登录和注册页面没有详细的填写检查，对于错误的填写，没有比较友好的提示，用户体验不佳。
+b.商品展示的样式单一，仅仅使用表格的形式
+c.对于加入购物车后的商品不能进行修改
+d.对于加入购物车后的商品，其库存量并没有做相应的减少，只有在其真正生成为订单后才做相应的减少
+e.没有支付流程
+f.没有书评流程
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<http://www.codeigniter.com/download>`_ page.
-
-**************************
-Changelog and New Features
-**************************
-
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
-
-*******************
-Server Requirements
-*******************
-
-PHP version 5.4 or newer is recommended.
-
-It should work on 5.2.4 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
-
-************
-Installation
-************
-
-Please see the `installation section <http://www.codeigniter.com/user_guide/installation/index.html>`_
-of the CodeIgniter User Guide.
-
-*******
-License
-*******
-
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
-
-*********
-Resources
-*********
-
--  `User Guide <http://www.codeigniter.com/docs>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community IRC <http://www.codeigniter.com/irc>`_
-
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_, thank you.
-
-***************
-Acknowledgement
-***************
-
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
+3.实验收获
+a.熟练的掌握基本的oracle操作
+b.学会使用MVC框架codeigniter
+c.熟练使用css框架bootstrap
+d.学会使用AJAX进行页面的异步刷新
